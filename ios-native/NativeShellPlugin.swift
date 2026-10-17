@@ -43,7 +43,7 @@ public class NativeShellPlugin: CAPPlugin, CAPBridgedPlugin {
             }
             self.tabIds = ids
             bar.items = items
-            bar.tintColor = UIColor(red: 0.208, green: 0.816, blue: 0.498, alpha: 1)   // your accent colour
+            bar.tintColor = UIColor(red: 0.784, green: 0.945, blue: 0.208, alpha: 1)   // your accent colour
             bar.delegate = self.tabDelegate
             self.tabDelegate.onSelect = { [weak self] index in
                 guard let self = self, index >= 0, index < self.tabIds.count else { return }
