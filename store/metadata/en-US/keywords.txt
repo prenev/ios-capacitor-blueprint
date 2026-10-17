@@ -1,1 +1,1 @@
-strength,weightlifting,bodybuilding,hypertrophy,powerlifting,progressive,overload,reps,sets,1rm,split
+strength,weightlifting,bodybuilding,hypertrophy,powerlifting,progressive,overload,reps,sets,1rm
