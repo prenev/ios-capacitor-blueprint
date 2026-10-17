@@ -32,11 +32,22 @@ export const updateSettings = (s: Partial<Settings>) => setData(d => ({ ...d, se
 export const addBody = (kg: number) => setData(d => ({ ...d, body: [...d.body, { id: uid(), t: Date.now(), kg } as BodyWeight].sort((a, b) => a.t - b.t) }))
 export const deleteBody = (id: string) => setData(d => ({ ...d, body: d.body.filter(b => b.id !== id) }))
 export const exportJSON = () => JSON.stringify(data, null, 1)
-export function importJSON(text: string): boolean {
+/** mode 'replace' swaps everything; 'merge' adds unseen workouts/exercises/body entries and lets the file's routines win (used with the MCP server round-trip). */
+export function importJSON(text: string, mode: 'replace' | 'merge' = 'replace'): boolean {
   try {
     const d = JSON.parse(text) as Data
     if (d?.v !== 1 || !Array.isArray(d.workouts) || !Array.isArray(d.routines)) return false
-    setData(() => ({ ...DEFAULTS, ...d, settings: { ...DEFAULTS.settings, ...d.settings } })); return true
+    if (mode === 'replace') { setData(() => ({ ...DEFAULTS, ...d, settings: { ...DEFAULTS.settings, ...d.settings } })); return true }
+    const gone = new Set(d.deletedRoutines ?? [])
+    const addNew = <T extends { id: string }>(have: T[], inc: T[] = []) => [...have, ...inc.filter(x => !have.some(h => h.id === x.id))]
+    setData(cur => ({
+      ...cur,
+      workouts: addNew(cur.workouts, d.workouts).sort((a, b) => a.start - b.start),
+      custom: addNew(cur.custom, d.custom),
+      body: addNew(cur.body, d.body).sort((a, b) => a.t - b.t),
+      routines: [...cur.routines.filter(r => !gone.has(r.id) && !d.routines.some(x => x.id === r.id)), ...d.routines.filter(r => !gone.has(r.id))],
+    }))
+    return true
   } catch { return false }
 }
 export const resetAll = () => { setData(() => DEFAULTS); setActive(null) }

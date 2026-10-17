@@ -63,8 +63,9 @@ export function Settings() {
   }
   const doImport = async (f?: File) => {
     if (!f) return
-    if (!confirm('Importing replaces everything currently in the app. Continue?')) return
-    setMsg(importJSON(await f.text()) ? 'Backup restored.' : 'That file is not a Plate backup.')
+    const merge = confirm('Merge this backup into your data?\n\nOK = merge (keeps your workouts, applies routines from the file; use this after the MCP server edited it)\nCancel = choose replace instead')
+    if (!merge && !confirm('Replace everything currently in the app with this backup?')) return
+    setMsg(importJSON(await f.text(), merge ? 'merge' : 'replace') ? (merge ? 'Backup merged.' : 'Backup restored.') : 'That file is not a Plate backup.')
   }
   return (
     <Sheet title="Settings" onBack={nav.pop}>

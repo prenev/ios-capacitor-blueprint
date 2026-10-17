@@ -12,6 +12,8 @@ A minimal, fully offline workout logger in the spirit of Hevy, without the socia
 
 Not included on purpose: social feed, cloud sync, accounts, ads. Not built yet: supersets, plate calculator, images/GIFs, rest-timer notification while the app is backgrounded, haptics.
 
+- **MCP server** (`mcp/`): AI apps can read your data, manage routines and review your training. See [mcp/README.md](mcp/README.md). It works on an exported backup file (manual round trip, not live sync).
+
 ## Code map
 `src/lib/store.ts` (state, persistence, active workout) · `src/lib/calc.ts` (1RM, volume, PRs, overload suggestion) · `src/lib/exbase.ts` + `src/data/exercises.json` (library) · `src/screens/*` (UI) · `src/ui/layers.tsx` (full-screen sheet stack; the native tab bar hides while any is open) · `scripts/make-icons.py` (regenerates app icon, splash, favicon; needs Pillow).
 

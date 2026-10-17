@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "plate": { "command": "npx", "args": ["tsx", "mcp/server.ts"], "env": { "PLATE_DATA": "./plate-backup.json" } }
+  }
+}

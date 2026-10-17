@@ -11,4 +11,5 @@ export interface Routine { id: string; name: string; exercises: RoutineExercise[
 
 export interface Settings { unit: 'kg' | 'lb'; rest: number; increment: number /* kg */ }
 export interface BodyWeight { id: string; t: number; kg: number }
-export interface Data { v: 1; workouts: Workout[]; routines: Routine[]; custom: Exercise[]; body: BodyWeight[]; settings: Settings }
+/** `deletedRoutines`: routine ids an external editor (the MCP server) removed; honoured by a merge import. */
+export interface Data { v: 1; deletedRoutines?: string[]; workouts: Workout[]; routines: Routine[]; custom: Exercise[]; body: BodyWeight[]; settings: Settings }
