@@ -1,0 +1,39 @@
+Plate is a minimal gym tracker for people who lift. Log your sets fast, know exactly what to lift next, and see your progress build up. It works completely offline: no account, no ads, no cloud. Your data never leaves your iPhone.
+
+LOG WORKOUTS FAST
+• Start an empty workout or one of your routines
+• Weight and reps per set, with warm-up, drop and failure sets
+• Last session's numbers shown beside every set, one tap to copy
+• Automatic rest timer after each set
+• Live duration, volume and set count
+• An unfinished workout survives closing the app
+
+PROGRESSIVE OVERLOAD, BUILT IN
+• Set a rep range per exercise, for example 6 to 10
+• Hit the top of the range on every set and Plate suggests more weight next time, otherwise one more rep
+• Your next target is shown on every exercise
+• Choose your own weight step, in kg or lb
+
+ROUTINES
+• Build routines with sets and rep ranges
+• Start from Push / Pull / Legs or your own plan
+• Repeat any past workout, or save it as a routine
+
+750+ EXERCISES WITH PHOTOS
+• Search and filter by muscle
+• Two-frame photos for each exercise so you can check your form
+• Step-by-step instructions
+• Add your own custom exercises, including bodyweight and timed ones
+
+SEE YOUR PROGRESS
+• Charts for heaviest weight, estimated 1RM and volume per exercise
+• Personal record flags on the sets where you set them
+• Workouts and volume per week, sets per muscle, weekly goal and streak
+• Body weight log
+
+YOURS TO KEEP
+• Everything is stored on your device
+• Export a full backup and import it on a new phone
+• Kilograms or pounds
+
+Plate is a training log, not medical advice. Talk to a professional before starting a new exercise program.

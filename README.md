@@ -14,8 +14,10 @@ Not included on purpose: social feed, cloud sync, accounts, ads. Not built yet: 
 
 - **MCP server** (`mcp/`): AI apps can read your data, manage routines and review your training. See [mcp/README.md](mcp/README.md). It works on an exported backup file (manual round trip, not live sync).
 
+- **App Store kit** (`store/`): icon, 12 screenshots (6.9" and 6.5"), header banner, listing text, search keywords, privacy policy and a submission checklist. See [store/README.md](store/README.md).
+
 ## Code map
-`src/lib/store.ts` (state, persistence, active workout) · `src/lib/calc.ts` (1RM, volume, PRs, overload suggestion) · `src/lib/exbase.ts` + `src/data/exercises.json` (library) · `src/screens/*` (UI) · `src/ui/layers.tsx` (full-screen sheet stack; the native tab bar hides while any is open) · `scripts/make-icons.py` (regenerates app icon, splash, favicon; needs Pillow) · `scripts/fetch-exercise-images.py` (re-downloads the photos into `public/ex/` as small greyscale WebP, ~18 MB total; already committed).
+`src/lib/store.ts` (state, persistence, active workout) · `src/lib/calc.ts` (1RM, volume, PRs, overload suggestion) · `src/lib/exbase.ts` + `src/data/exercises.json` (library) · `src/screens/*` (UI) · `src/ui/layers.tsx` (full-screen sheet stack; the native tab bar hides while any is open) · `brand/mark.svg` (the biceps logo, source of every icon) · `scripts/make-icons.py` (regenerates app icon, splash, favicon from it; needs Pillow) · `scripts/fetch-exercise-images.py` (re-downloads the photos into `public/ex/` as small greyscale WebP, ~18 MB total; already committed).
 
 **Look**: near-black surfaces, one lime accent, lucide icons, large titles, weekly-goal ring, area charts, sheet transitions. Tokens live at the top of `src/styles.css`. Photos are desaturated at build time so the busy gym backgrounds stay quiet on the dark UI.
 

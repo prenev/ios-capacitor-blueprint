@@ -1,0 +1,1 @@
+First release. Log workouts, build routines, track progress with progressive overload suggestions, and browse 750+ exercises with photos, all offline.

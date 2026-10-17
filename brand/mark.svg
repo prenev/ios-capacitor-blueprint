@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Plate logo: flexed biceps, outline, one flat colour -->
+  <g transform="translate(-3 3)" fill="none" stroke="#c8f135" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M32 11 H40 C46 11 50 15 50 21 V28 C50 33 47 36 44 38 C45 46 46 52 49 58 C54 44 66 36 78 41 C90 47 93 62 88 73 C86 79 80 82 72 82 L30 82 C22 82 18 76 19 68 C20 56 22 46 24 38 C21 35 21 32 21 21 C21 15 25 11 32 11 Z"/>
+    <path d="M29 25 H42" stroke-width="4.5"/>
+    <path d="M58 70 C62 60 72 58 79 64" stroke-width="4.5"/>
+  </g>
+</svg>

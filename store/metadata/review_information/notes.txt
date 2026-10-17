@@ -1,0 +1,3 @@
+Plate needs no login. All data is stored locally on the device and the app makes no network requests.
+To try it: tap "Add Push / Pull / Legs" on the Train tab, tap the play button on a routine, enter weight and reps and check off sets (a rest timer starts). Tap Finish to save the workout to History.
+Backup export/import is under Stats > settings (gear icon).
