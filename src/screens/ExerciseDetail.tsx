@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { ArrowUp, Trash2 } from 'lucide-react'
 import { fmtDur, fmtNum, fmtWeight, recordsFor, sessionsFor, setVolume, e1rm, suggest, toDisplay } from '../lib/calc'
 import { useExercises } from '../lib/exercises'
 import { deleteCustom, useData } from '../lib/store'
 import { Line, Segmented, Sheet } from '../ui/bits'
+import { Hero } from '../ui/ExImage'
 import { useNav } from '../ui/layers'
 
 type Metric = 'weight' | '1rm' | 'volume'
@@ -19,33 +21,33 @@ export function ExerciseDetail({ id }: { id: string }) {
     : metric === '1rm' ? toDisplay(Math.max(...s.sets.map(x => e1rm(x.weight ?? 0, x.reps ?? 0))), u)
     : toDisplay(s.sets.reduce((a, x) => a + setVolume(x), 0), u)
   return (
-    <Sheet title={ex.name} onBack={nav.pop} right={ex.custom ? <button className="link danger" onClick={() => { if (confirm(`Delete "${ex.name}"? Past workouts keep their data.`)) { deleteCustom(id); nav.pop() } }}>Delete</button> : undefined}>
-      <div className="pad">
-        <p className="sub">{ex.muscle} · {ex.equipment}</p>
+    <Sheet floating onBack={nav.pop} right={ex.custom ? <button className="icon glass" aria-label="Delete exercise" onClick={() => { if (confirm(`Delete "${ex.name}"? Past workouts keep their data.`)) { deleteCustom(id); nav.pop() } }}><Trash2 size={19} /></button> : undefined}>
+      <Hero id={id} />
+      <div className="pad pull-up">
+        <h1 className="ex-h1">{ex.name}</h1>
+        <div className="pills"><span>{ex.muscle}</span><span>{ex.equipment}</span>{ex.custom && <span>Custom</span>}</div>
         {next && !time && (
-          <div className="card accent">
-            <small>Next target (double progression, 8–12 reps)</small>
-            <b>{next.weight ? `${fmtWeight(next.weight, u)} ${u} × ` : ''}{next.reps} reps {next.up && <span className="tag">↑ add weight</span>}</b>
+          <div className="panel target-card rise">
+            <small className="eyebrow">Next target</small>
+            <div className="target-big"><b>{next.weight ? fmtWeight(next.weight, u) : '—'}<i>{next.weight ? u : ''}</i></b><span>×</span><b>{next.reps}<i>reps</i></b>{next.up && <span className="tag"><ArrowUp size={12} strokeWidth={3} /> add weight</span>}</div>
           </div>
         )}
         {!time && sessions.length > 0 && (
-          <>
-            <div className="tiles">
-              <div><small>Heaviest</small><b>{fmtWeight(rec.weight, u)} {u}</b></div>
-              <div><small>Est. 1RM</small><b>{fmtWeight(rec.e1rm, u)} {u}</b></div>
-              <div><small>Best set vol.</small><b>{fmtWeight(rec.setVolume, u)} {u}</b></div>
-              <div><small>Best session vol.</small><b>{fmtWeight(rec.sessionVolume, u)} {u}</b></div>
-            </div>
-            <Segmented value={metric} onChange={setMetric} options={[{ id: 'weight', label: 'Weight' }, { id: '1rm', label: 'Est. 1RM' }, { id: 'volume', label: 'Volume' }]} />
-          </>
+          <div className="tiles">
+            <div><small>Heaviest</small><b>{fmtWeight(rec.weight, u)}<i>{u}</i></b></div>
+            <div><small>Est. 1RM</small><b>{fmtWeight(rec.e1rm, u)}<i>{u}</i></b></div>
+            <div><small>Best set</small><b>{fmtWeight(rec.setVolume, u)}<i>{u}</i></b></div>
+            <div><small>Best session</small><b>{fmtWeight(rec.sessionVolume, u)}<i>{u}</i></b></div>
+          </div>
         )}
-        <Line pts={chrono.map(s => ({ t: s.workout.start, y: val(s) }))} fmt={n => time ? fmtDur(n) : fmtNum(n)} />
+        {!time && sessions.length > 0 && <Segmented value={metric} onChange={setMetric} options={[{ id: 'weight', label: 'Weight' }, { id: '1rm', label: 'Est. 1RM' }, { id: 'volume', label: 'Volume' }]} />}
+        <div className="panel flush"><Line pts={chrono.map(s => ({ t: s.workout.start, y: val(s) }))} fmt={n => time ? fmtDur(n) : fmtNum(n)} /></div>
         <h2>History</h2>
         {!sessions.length && <div className="empty">No sets logged yet.</div>}
         {sessions.map(s => (
-          <button key={s.workout.id + s.ex.id} className="card tap" onClick={() => nav.push({ k: 'workout', id: s.workout.id })}>
+          <button key={s.workout.id + s.ex.id} className="panel tap hist" onClick={() => nav.push({ k: 'workout', id: s.workout.id })}>
             <div className="split"><b>{new Date(s.workout.start).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</b><small>{s.workout.name}</small></div>
-            <div className="sets">{s.sets.map((x, i) => <span key={x.id}>{i + 1}. {time ? fmtDur(x.reps ?? 0) : `${x.weight ? fmtWeight(x.weight, u) + ' × ' : ''}${x.reps ?? 0}`}</span>)}</div>
+            <div className="sets">{s.sets.map((x, i) => <span key={x.id}><em>{i + 1}</em>{time ? fmtDur(x.reps ?? 0) : `${x.weight ? fmtWeight(x.weight, u) + ' × ' : ''}${x.reps ?? 0}`}</span>)}</div>
           </button>
         ))}
         {ex.howto && <><h2>How to</h2><p className="howto">{ex.howto}</p></>}

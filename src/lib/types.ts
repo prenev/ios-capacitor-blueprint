@@ -9,7 +9,7 @@ export interface Workout { id: string; name: string; start: number; end: number;
 export interface RoutineExercise { exerciseId: string; sets: number; repMin: number; repMax: number }
 export interface Routine { id: string; name: string; exercises: RoutineExercise[] }
 
-export interface Settings { unit: 'kg' | 'lb'; rest: number; increment: number /* kg */ }
+export interface Settings { unit: 'kg' | 'lb'; rest: number; increment: number /* kg */; goal: number /* workouts per week */ }
 export interface BodyWeight { id: string; t: number; kg: number }
 /** `deletedRoutines`: routine ids an external editor (the MCP server) removed; honoured by a merge import. */
 export interface Data { v: 1; deletedRoutines?: string[]; workouts: Workout[]; routines: Routine[]; custom: Exercise[]; body: BodyWeight[]; settings: Settings }

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Dumbbell, Flame, Settings as Cog, Trophy, Weight, X } from 'lucide-react'
 import { fmtNum, fmtVolume, fromDisplay, toDisplay, weekStart, weeklyStreak, workoutVolume, workSets } from '../lib/calc'
 import { useExercises } from '../lib/exercises'
 import { addBody, deleteBody, exportJSON, importJSON, resetAll, updateSettings, useData } from '../lib/store'
@@ -20,30 +21,30 @@ export function StatsTab() {
   const [bw, setBw] = useState<number | null>(null)
   return (
     <main className="page">
-      <div className="head"><h1>Stats</h1><button className="icon" aria-label="Settings" onClick={() => nav.push({ k: 'settings' })}>⚙︎</button></div>
+      <div className="head"><h1>Stats</h1><button className="icon glass" aria-label="Settings" onClick={() => nav.push({ k: 'settings' })}><Cog size={20} /></button></div>
       <div className="tiles">
-        <div><small>Workouts</small><b>{workouts.length}</b></div>
-        <div><small>This week</small><b>{inWeek(11).length}</b></div>
-        <div><small>Week streak</small><b>{weeklyStreak(workouts)}</b></div>
-        <div><small>Total volume</small><b>{fmtVolume(workouts.reduce((a, w) => a + workoutVolume(w), 0), u)} {u}</b></div>
+        <div><small><Dumbbell size={13} /> Workouts</small><b>{workouts.length}</b></div>
+        <div><small><Flame size={13} /> Week streak</small><b>{weeklyStreak(workouts)}</b></div>
+        <div><small><Trophy size={13} /> This week</small><b>{inWeek(11).length}<i>/ {settings.goal}</i></b></div>
+        <div><small><Weight size={13} /> Total volume</small><b>{fmtVolume(workouts.reduce((a, w) => a + workoutVolume(w), 0), u)}<i>{u}</i></b></div>
       </div>
       <h2>Workouts per week</h2>
-      <div className="card"><Bars values={counts} labels={labels} /></div>
+      <div className="panel"><Bars values={counts} labels={labels} /></div>
       <h2>Volume per week ({u})</h2>
-      <div className="card"><Bars values={vols} labels={labels} fmt={n => fmtNum(n, 0)} /></div>
+      <div className="panel"><Bars values={vols} labels={labels} fmt={n => fmtNum(n, 0)} /></div>
       <h2>Sets by muscle · 30 days</h2>
-      <div className="card">
+      <div className="panel">
         {!mrows.length && <div className="empty small">No data yet</div>}
         {mrows.map(([m, n]) => <div key={m} className="hbar"><span>{m}</span><i><u style={{ width: `${n / mmax * 100}%` }} /></i><b>{n}</b></div>)}
       </div>
       <h2>Body weight</h2>
-      <div className="card">
+      <div className="panel">
         <Line pts={body.map(b => ({ t: b.t, y: toDisplay(b.kg, u) }))} fmt={n => `${fmtNum(n)} ${u}`} />
         <div className="inline">
           <NumInput value={bw} placeholder={`Today (${u})`} onChange={setBw} className="num wide" />
           <button className="btn small" disabled={!bw} onClick={() => { addBody(fromDisplay(bw!, u)); setBw(null) }}>Log</button>
         </div>
-        {body.slice(-3).reverse().map(b => <div key={b.id} className="split"><small>{new Date(b.t).toLocaleDateString()}</small><span>{fmtNum(toDisplay(b.kg, u))} {u} <button className="link danger" onClick={() => deleteBody(b.id)}>✕</button></span></div>)}
+        {body.slice(-3).reverse().map(b => <div key={b.id} className="split"><small>{new Date(b.t).toLocaleDateString()}</small><span>{fmtNum(toDisplay(b.kg, u))} {u} <button className="link danger" aria-label="Delete entry" onClick={() => deleteBody(b.id)}><X size={14} /></button></span></div>)}
       </div>
     </main>
   )
@@ -72,6 +73,7 @@ export function Settings() {
       <div className="pad form">
         <div className="field"><span>Units</span><Segmented value={u} onChange={v => updateSettings({ unit: v })} options={[{ id: 'kg', label: 'kg' }, { id: 'lb', label: 'lb' }]} /></div>
         <label>Rest timer (seconds)<NumInput decimal={false} value={settings.rest} onChange={v => updateSettings({ rest: Math.max(0, v ?? 0) })} /></label>
+        <label>Weekly goal (workouts)<NumInput decimal={false} value={settings.goal} onChange={v => updateSettings({ goal: Math.min(14, Math.max(1, v ?? 3)) })} /></label>
         <label>Overload step ({u})<NumInput value={Math.round(toDisplay(settings.increment, u) * 100) / 100} onChange={v => updateSettings({ increment: fromDisplay(Math.max(0, v ?? 0), u) })} /></label>
         <p className="hint left">When every set reaches the top of the rep range, the next workout suggests this much more weight.</p>
         <h2>Data</h2>

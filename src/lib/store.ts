@@ -6,14 +6,14 @@ import { base } from './exbase'
 const KEY = 'plate.data', AKEY = 'plate.active'
 export const uid = (): string => (globalThis.crypto?.randomUUID?.() ?? `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`)
 
-const DEFAULTS: Data = { v: 1, workouts: [], routines: [], custom: [], body: [], settings: { unit: 'kg', rest: 90, increment: 2.5 } }
+const DEFAULTS: Data = { v: 1, workouts: [], routines: [], custom: [], body: [], settings: { unit: 'kg', rest: 90, increment: 2.5, goal: 3 } }
 
 const read = <T,>(k: string): T | null => { try { const s = localStorage.getItem(k); return s ? JSON.parse(s) as T : null } catch { return null } }
 const write = (k: string, v: unknown) => { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)) } catch { /* storage full / blocked: keep running in memory */ } }
 
 let data: Data = (() => { const d = read<Data>(KEY); return d && d.v === 1 ? { ...DEFAULTS, ...d, settings: { ...DEFAULTS.settings, ...d.settings } } : DEFAULTS })()
 let active: Workout | null = read<Workout>(AKEY)
-let restEnd = 0 // epoch ms when the rest timer ends (0 = off); not persisted
+let rest = { end: 0, total: 0 } // rest timer: epoch ms it ends (0 = off) and its length in s; not persisted
 const subs = new Set<() => void>()
 const emit = () => subs.forEach(f => f())
 const subscribe = (f: () => void) => { subs.add(f); return () => { subs.delete(f) } }
@@ -23,7 +23,7 @@ const setActive = (a: Workout | null) => { active = a; write(AKEY, a); emit() }
 
 export const useData = () => useSyncExternalStore(subscribe, () => data)
 export const useActive = () => useSyncExternalStore(subscribe, () => active)
-export const useRestEnd = () => useSyncExternalStore(subscribe, () => restEnd)
+export const useRest = () => useSyncExternalStore(subscribe, () => rest)
 
 export const getData = () => data
 
@@ -81,12 +81,12 @@ export function finishWorkout(): string | null {
     .filter(e => e.sets.length)
   const w: Workout = { ...active, exercises, end: Date.now() }
   setData(d => ({ ...d, workouts: [...d.workouts, w].sort((a, b) => a.start - b.start) }))
-  restEnd = 0
+  rest = { end: 0, total: 0 }
   setActive(null)
   return w.id
 }
-export const discardWorkout = () => { restEnd = 0; setActive(null) }
+export const discardWorkout = () => { rest = { end: 0, total: 0 }; setActive(null) }
 
-export const startRest = (sec: number) => { restEnd = Date.now() + sec * 1000; emit() }
-export const adjustRest = (sec: number) => { if (restEnd) { restEnd = Math.max(Date.now(), restEnd + sec * 1000); emit() } }
-export const stopRest = () => { restEnd = 0; emit() }
+export const startRest = (sec: number) => { rest = { end: Date.now() + sec * 1000, total: sec }; emit() }
+export const adjustRest = (sec: number) => { if (rest.end) { rest = { end: Math.max(Date.now(), rest.end + sec * 1000), total: Math.max(1, rest.total + sec) }; emit() } }
+export const stopRest = () => { rest = { end: 0, total: 0 }; emit() }

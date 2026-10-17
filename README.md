@@ -6,7 +6,7 @@ A minimal, fully offline workout logger in the spirit of Hevy, without the socia
 - **Workouts**: start empty or from a routine; sets with weight × reps, warm-up / drop / failure types, per-exercise notes, "PREV" column (tap to copy last time), live duration / volume / set count, auto **rest timer** (±15s, skip), unfinished workouts survive an app kill.
 - **Routines**: build your own (sets + rep range per exercise, reorder), one-tap Push / Pull / Legs starters, "Repeat workout", "Save workout as routine".
 - **Progressive overload** (double progression): stay at a weight until *every* working set hits the top of the rep range, then the next workout pre-fills `+step` kg (default 2.5, configurable) at the bottom of the range; otherwise it pre-fills one more rep per set. The "next target" is also shown on each exercise's page.
-- **Exercise library**: 753 exercises bundled offline (muscle, equipment, how-to) from [free-exercise-db](https://github.com/yuhonas/free-exercise-db) (public domain), search + muscle filter, plus your own custom exercises.
+- **Exercise library**: 753 exercises bundled offline (muscle, equipment, how-to, **two photo frames each** that loop like a demo, shown as thumbnails everywhere) from [free-exercise-db](https://github.com/yuhonas/free-exercise-db) (public domain), search + muscle filter, plus your own custom exercises.
 - **Progress**: per-exercise charts (heaviest weight, estimated 1RM (Epley), volume), records, full history; 🏆 PR flags per set (weight / 1RM / volume) in workout detail; weekly workouts + volume, sets per muscle (30 days), week streak, body-weight log.
 - **Settings**: kg / lb (stored in kg), rest time, overload step, JSON **export / import backup**, delete all data.
 
@@ -15,7 +15,9 @@ Not included on purpose: social feed, cloud sync, accounts, ads. Not built yet: 
 - **MCP server** (`mcp/`): AI apps can read your data, manage routines and review your training. See [mcp/README.md](mcp/README.md). It works on an exported backup file (manual round trip, not live sync).
 
 ## Code map
-`src/lib/store.ts` (state, persistence, active workout) · `src/lib/calc.ts` (1RM, volume, PRs, overload suggestion) · `src/lib/exbase.ts` + `src/data/exercises.json` (library) · `src/screens/*` (UI) · `src/ui/layers.tsx` (full-screen sheet stack; the native tab bar hides while any is open) · `scripts/make-icons.py` (regenerates app icon, splash, favicon; needs Pillow).
+`src/lib/store.ts` (state, persistence, active workout) · `src/lib/calc.ts` (1RM, volume, PRs, overload suggestion) · `src/lib/exbase.ts` + `src/data/exercises.json` (library) · `src/screens/*` (UI) · `src/ui/layers.tsx` (full-screen sheet stack; the native tab bar hides while any is open) · `scripts/make-icons.py` (regenerates app icon, splash, favicon; needs Pillow) · `scripts/fetch-exercise-images.py` (re-downloads the photos into `public/ex/` as small greyscale WebP, ~18 MB total; already committed).
+
+**Look**: near-black surfaces, one lime accent, lucide icons, large titles, weekly-goal ring, area charts, sheet transitions. Tokens live at the top of `src/styles.css`. Photos are desaturated at build time so the busy gym backgrounds stay quiet on the dark UI.
 
 The rest of this file is the underlying blueprint docs.
 

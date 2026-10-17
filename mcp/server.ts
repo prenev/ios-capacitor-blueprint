@@ -24,7 +24,7 @@ const here = dirname(fileURLToPath(import.meta.url))
 const LIB: Exercise[] = (JSON.parse(readFileSync(resolve(here, '../src/data/exercises.json'), 'utf8')) as [string, string, string, string, Kind, string][])
   .map(([id, name, muscle, equipment, kind, howto]) => ({ id, name, muscle, equipment, kind, howto }))
 
-const EMPTY: Data = { v: 1, workouts: [], routines: [], custom: [], body: [], settings: { unit: 'kg', rest: 90, increment: 2.5 } }
+const EMPTY: Data = { v: 1, workouts: [], routines: [], custom: [], body: [], settings: { unit: 'kg', rest: 90, increment: 2.5, goal: 3 } }
 const load = (): Data => {
   if (!existsSync(FILE)) throw new Error(`No Plate backup at ${FILE}. In the app: Stats > ⚙︎ > Export backup, save it there (or set PLATE_DATA).`)
   const d = JSON.parse(readFileSync(FILE, 'utf8')) as Data
