@@ -1,0 +1,11 @@
+:root { --bg: #0e1726; --fg: #f1f5ff; --accent: #35d07f; --safe-t: env(safe-area-inset-top, 0px); --safe-b: env(safe-area-inset-bottom, 0px); }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body, #root { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.4 -apple-system, system-ui, sans-serif; }
+.app { height: 100%; overflow-y: auto; padding: calc(var(--safe-t) + 16px) 16px calc(var(--safe-b) + 84px); }
+/* When the real UIKit bar is up, its height (points) is exposed as --native-tab-h by useNativeTabs. */
+.native-tabs .app { padding-bottom: calc(var(--native-tab-h, 0px) + 24px); }
+.btn { background: var(--accent); color: #07130d; border: 0; border-radius: 14px; padding: 12px 18px; font-weight: 800; font-size: 16px; }
+.sheet { position: fixed; inset: 0; background: var(--bg); padding: calc(var(--safe-t) + 16px) 16px; z-index: 5; }
+.webtabs { position: fixed; left: 0; right: 0; bottom: 0; display: flex; padding-bottom: var(--safe-b); background: #16233a; border-top: 1px solid #ffffff1a; }
+.webtabs button { flex: 1; padding: 14px 0; background: none; border: 0; color: #9fb0cc; font-weight: 700; }
+.webtabs button[aria-current='true'] { color: var(--accent); }
